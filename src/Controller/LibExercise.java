@@ -1,4 +1,5 @@
 package Controller;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,10 +43,10 @@ public class LibExercise {
         List<String> books = new ArrayList<>();
         try {
             String query = "SELECT books.book_title, books.publication_date, authors.author_name, genres.genre_name " +
-                           "FROM books " +
-                           "JOIN authors ON books.author_id = authors.auth_id " +
-                           "JOIN genres ON books.genre_id = genres.genre_id " +
-                           "WHERE year(books.publication_date) > ?";
+                    "FROM books " +
+                    "JOIN authors ON books.author_id = authors.auth_id " +
+                    "JOIN genres ON books.genre_id = genres.genre_id " +
+                    "WHERE year(books.publication_date) > ?";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setInt(1, year);
             ResultSet rs = stmt.executeQuery();
@@ -54,7 +55,8 @@ public class LibExercise {
                 String publicationDate = rs.getString("publication_date");
                 String authorName = rs.getString("author_name");
                 String genreName = rs.getString("genre_name");
-                String bookDetails = String.format("%-30s |%-15s |%-20s |%s", bookTitle, publicationDate, authorName, genreName);
+                String bookDetails = String.format("%-30s |%-15s |%-20s |%s", bookTitle, publicationDate, authorName,
+                        genreName);
                 books.add(bookDetails);
             }
         } catch (SQLException e) {
@@ -88,11 +90,11 @@ public class LibExercise {
         List<String> bookAvailable = new ArrayList<>();
         try {
             String query = "SELECT b.book_title, a.author_name, g.genre_name, " +
-                           "IF(br.borrow_date IS NULL, 'Available', 'Not Available') AS Availability " +
-                           "FROM books b " +
-                           "INNER JOIN authors a ON b.author_id = a.auth_id " +
-                           "INNER JOIN genres g ON b.genre_id = g.genre_id " +
-                           "LEFT OUTER JOIN borrowers br ON b.book_id = br.book_id";
+                    "IF(br.borrow_date IS NULL, 'Available', 'Not Available') AS Availability " +
+                    "FROM books b " +
+                    "INNER JOIN authors a ON b.author_id = a.auth_id " +
+                    "INNER JOIN genres g ON b.genre_id = g.genre_id " +
+                    "LEFT OUTER JOIN borrowers br ON b.book_id = br.book_id";
             PreparedStatement stmt = con.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -100,7 +102,8 @@ public class LibExercise {
                 String authorName = rs.getString("author_name");
                 String genreName = rs.getString("genre_name");
                 String availability = rs.getString("Availability");
-                String bookDetails = String.format("%-30s |%-20s |%-15s |%s",bookTitle, authorName, genreName, availability);
+                String bookDetails = String.format("%-30s |%-20s |%-15s |%s", bookTitle, authorName, genreName,
+                        availability);
                 bookAvailable.add(bookDetails);
             }
         } catch (SQLException e) {
@@ -108,7 +111,5 @@ public class LibExercise {
         }
         return bookAvailable;
     }
-
-
 
 }

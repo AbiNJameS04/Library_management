@@ -48,7 +48,7 @@ public class BookHandler implements HttpHandler {
             }
 
         } else if (method.equals("POST")) {
-           handlePostRequest(exchange);
+            handlePostRequest(exchange);
         }
 
         else if (method.equals("PUT")) {
@@ -75,7 +75,7 @@ public class BookHandler implements HttpHandler {
                 jsonObject.put("genreId", book.getGenreId());
                 jsonObject.put("publicationDate", book.getPublicationDate());
                 jsonObject.put("deleted", book.getIsDelete());
-              
+
                 jsonArray.put(jsonObject);
             }
             if (books.isEmpty()) {
@@ -123,8 +123,6 @@ public class BookHandler implements HttpHandler {
             sendResponse(exchange, 400, errorMessage);
         }
     }
-
-   
 
     public void handlePutRequest(HttpExchange exchange) throws IOException {
         try {
@@ -226,23 +224,6 @@ public class BookHandler implements HttpHandler {
             sendResponse(exchange, 500, "Internal Server Error");
         }
     }
-
-    // public void handlePostRequestRepair(HttpExchange exchange) throws IOException, SQLException {
-
-    //     try {
-    //         List<Book> books = new ArrayList<>();
-    //         books = bookCRUD.manageRepair();
-    //         bookCRUD.updateStatus(books);
-
-    //         String response = "repair status updated.";
-    //         sendResponse(exchange, 201, response);
-
-    //     } catch (SQLException e) {
-    //         e.printStackTrace();
-    //         String errorMessage = "Error creating book in the database";
-    //         sendResponse(exchange, 400, errorMessage);
-    //     }
-    // }
 
     private void sendJsonResponse(HttpExchange exchange, int statusCode, String response) throws IOException {
         Headers headers = exchange.getResponseHeaders();

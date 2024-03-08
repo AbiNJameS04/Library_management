@@ -50,25 +50,24 @@ public class RepaireHandler implements HttpHandler {
             if (path.length == 2) {
                 handleGetAllRepaireRequest(exchange);
             } else {
-               handleGetRepaireByIdRequest(exchange);
+                handleGetRepaireByIdRequest(exchange);
 
             }
         }
-        
-    }
 
+    }
 
     private void handlepost(HttpExchange exchange) throws IOException {
 
         String[] path = exchange.getRequestURI().getPath().split("/");
         if (path.length == 2 || path.length == 3) {
             if (path.length == 2) {
-               handlePostRequest(exchange);
+                handlePostRequest(exchange);
             } else {
-               handlePostRequestRepair(exchange);
+                handlePostRequestRepair(exchange);
             }
         }
-        
+
     }
 
     private void handleGetAllRepaireRequest(HttpExchange exchange) throws IOException {
@@ -85,56 +84,55 @@ public class RepaireHandler implements HttpHandler {
         }
         sendResponse(exchange, 200, jsonArray.toString());
     }
-    
+
     private void handleGetRepaireByIdRequest(HttpExchange exchange) throws IOException {
         int rep_id = Integer.parseInt(exchange.getRequestURI().getPath().replaceAll("[^\\d]", ""));
 
-
-            Repaire repaire = repaireCRUD.getRepaireById(rep_id);
-            if (repaire == null) {
-                sendResponse(exchange, 404, "Reapaire data with id " + rep_id + ",not found");
-            }else{
-                JSONObject json = new JSONObject();
-                json.put("rep_id", repaire.getRep_id());
-                json.put("book_id", repaire.getBook_id());
-                json.put("damage", repaire.getDamage());
-                json.put("repaire_date", repaire.getRepaire_date().toString());
-                json.put("repaireStatus", repaire.getRepaireStatus());
-                sendResponse(exchange, 200, json.toString());
-            } 
-        
-    }
-    
-    BookCRUD b=new BookCRUD();
-    private void handlePostRequest(HttpExchange exchange) throws IOException {
-        try{
-        InputStream requestBody = exchange.getRequestBody();
-        JSONObject jsonRequest = new JSONObject(new String(requestBody.readAllBytes()));
-
-        if (!jsonRequest.has("book_id") || !jsonRequest.has("damage")) {
-            sendResponse(exchange, 400, "Missing required fields");
-            return;
-        }
-
-
-        int book_id = jsonRequest.getInt("book_id");
-        String damage = jsonRequest.getString("damage");
-        String repaireStatus = "Not Started";
-    
-        if (damage.equalsIgnoreCase("no damage")) {
-            repaireStatus = "No Need";
-        }
-
-        Repaire repaire = new Repaire(0, book_id, damage, LocalDate.now(), repaireStatus);
-        String result= repaireCRUD.addRepaire(repaire);
-
-        if (result == null) {
-            String response = "Repaire record added successfully";
-            sendResponse(exchange, 201, response);
+        Repaire repaire = repaireCRUD.getRepaireById(rep_id);
+        if (repaire == null) {
+            sendResponse(exchange, 404, "Reapaire data with id " + rep_id + ",not found");
         } else {
-            sendResponse(exchange, 500, result);
+            JSONObject json = new JSONObject();
+            json.put("rep_id", repaire.getRep_id());
+            json.put("book_id", repaire.getBook_id());
+            json.put("damage", repaire.getDamage());
+            json.put("repaire_date", repaire.getRepaire_date().toString());
+            json.put("repaireStatus", repaire.getRepaireStatus());
+            sendResponse(exchange, 200, json.toString());
         }
-    }catch (JSONException | IOException e) {
+
+    }
+
+    BookCRUD b = new BookCRUD();
+
+    private void handlePostRequest(HttpExchange exchange) throws IOException {
+        try {
+            InputStream requestBody = exchange.getRequestBody();
+            JSONObject jsonRequest = new JSONObject(new String(requestBody.readAllBytes()));
+
+            if (!jsonRequest.has("book_id") || !jsonRequest.has("damage")) {
+                sendResponse(exchange, 400, "Missing required fields");
+                return;
+            }
+
+            int book_id = jsonRequest.getInt("book_id");
+            String damage = jsonRequest.getString("damage");
+            String repaireStatus = "Not Started";
+
+            if (damage.equalsIgnoreCase("no damage")) {
+                repaireStatus = "No Need";
+            }
+
+            Repaire repaire = new Repaire(0, book_id, damage, LocalDate.now(), repaireStatus);
+            String result = repaireCRUD.addRepaire(repaire);
+
+            if (result == null) {
+                String response = "Repaire record added successfully";
+                sendResponse(exchange, 201, response);
+            } else {
+                sendResponse(exchange, 500, result);
+            }
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
             String errorMessage = "Error parsing request body";
             sendResponse(exchange, 400, errorMessage);
@@ -182,23 +180,20 @@ public class RepaireHandler implements HttpHandler {
 
     private void handlePostRequestRepair(HttpExchange exchange) throws IOException {
         try {
-           
+
             List<Repaire> updatedRepaires = repaireCRUD.manageRepair();
 
             JSONObject jsonResponse = new JSONObject();
             jsonResponse.put("message", "Repaire status updated successfully");
             jsonResponse.put("updated_repaires", updatedRepaires);
 
-            // Send response
+          
             sendResponse(exchange, 200, jsonResponse.toString());
         } catch (SQLException e) {
             e.printStackTrace();
             sendResponse(exchange, 500, "Internal Server Error");
         }
     }
-    
-
-
 
     private void sendResponse(HttpExchange exchange, int statusCode, String response) throws IOException {
         exchange.getResponseHeaders().set("Content-Type", "application/json");

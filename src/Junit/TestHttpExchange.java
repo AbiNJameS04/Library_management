@@ -20,7 +20,6 @@ public class TestHttpExchange extends HttpExchange {
     private Headers responseHeaders;
     private int responseCode;
     private ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    
 
     public TestHttpExchange() {
 
