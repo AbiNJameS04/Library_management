@@ -19,7 +19,6 @@ public class ApiServer {
         RepaireHandler repaireHandler = new RepaireHandler(repaireCRUD);
         server.createContext("/repaire", repaireHandler);
         server.createContext("/books", new BookHandler(a.DbConnection()));
-        // server.createContext("/books/repair", new RepairHandler());
         server.setExecutor(null);
         server.start();
         System.out.println("Server started on port 8000");

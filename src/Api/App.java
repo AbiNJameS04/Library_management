@@ -26,7 +26,7 @@ public class App {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Library_db", "root", "");
-            // System.out.println("Connected to the database!");
+            System.out.println("Connected to the database!");
             return con;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -351,16 +351,16 @@ public class App {
                     }
                     break;
                 // case 5:
-                //     System.out.print("Enter monthly budget: ");
-                //     double monthlyBudget;
-                //     try {
-                //         monthlyBudget = Double.parseDouble(scanner.nextLine());
-                //     } catch (NumberFormatException e) {
-                //         System.out.println("Invalid budget format.");
-                //         return;
-                //     }
+                // System.out.print("Enter monthly budget: ");
+                // double monthlyBudget;
+                // try {
+                // monthlyBudget = Double.parseDouble(scanner.nextLine());
+                // } catch (NumberFormatException e) {
+                // System.out.println("Invalid budget format.");
+                // return;
+                // }
 
-                    //bookc.processRepair(monthlyBudget);
+                // bookc.processRepair(monthlyBudget);
 
                 case 6:
                     System.out.println("Exited");
