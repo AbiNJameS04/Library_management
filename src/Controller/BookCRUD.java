@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Entity.Book;
-import Entity.Damages;
 
 public class BookCRUD {
     private Connection con;

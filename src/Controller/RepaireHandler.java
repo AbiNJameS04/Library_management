@@ -1,6 +1,5 @@
 package Controller;
 
-import Entity.Book;
 import Entity.Repaire;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -13,7 +12,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class RepaireHandler implements HttpHandler {
