@@ -11,6 +11,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
 import Controller.BookCRUD;
@@ -24,8 +26,12 @@ public class App {
 
     public Connection DbConnection() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Library_db", "root", "");
+             ResourceBundle rd = ResourceBundle.getBundle("resources.system",new Locale("en_US"));
+             String loadDriver = rd.getString("driver");
+             String url = rd.getString("url");
+            String username = rd.getString("username");
+            Class.forName(loadDriver);
+            con = DriverManager.getConnection(url, username, "");
             System.out.println("Connected to the database!");
             return con;
         } catch (ClassNotFoundException e) {
